@@ -1,4 +1,4 @@
-# doddle
+# Flutter painting
 
 A new Flutter project.
 
