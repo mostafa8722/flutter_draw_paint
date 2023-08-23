@@ -2,7 +2,8 @@ import 'dart:async';
 
 
 import 'package:bloc/bloc.dart';
-import 'package:doddle/bussiness_logic/bloc/home_bloc.dart';
+import 'package:doddle/bussiness_logic/bloc/home/home_bloc.dart';
+
 import 'package:doddle/views/home/home_screen.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

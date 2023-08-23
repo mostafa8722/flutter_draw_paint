@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doddle/data/models/frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as image;
 import 'dart:ui' as ui;
 
 class RecordController {
@@ -27,6 +29,40 @@ class RecordController {
      Uint8List pngByte = byteData!.buffer!.asUint8List();
 
     return pngByte;
+  }
+
+  Future<List<int>?> export() async{
+    List<RawFrame> bytes = [];
+
+    for( final frame in frames!){
+      final i = await frame.frame!.toByteData(format: ui.ImageByteFormat.png);
+      if(i!=null){
+        bytes.add(RawFrame(23, i));
+      }else{
+        print("skipped frame while encoding");
+      }
+    }
+    final result = compute((message) => null, bytes);
+    frames!.clear();
+    return result;
+    
+  }
+
+  static Future<List<int>?> _export(List<RawFrame> frames)async{
+    final animation = image.Animation();
+    animation.backgroundColor = Colors.transparent.value;
+    for(final frame in frames){
+      final iAsBytes = frame.data.buffer.asUint8List();
+      final decodedImage = image.decodePng(iAsBytes);
+
+      if(decodedImage==null){
+        print("skipped frame while encoding");
+        continue;
+      }
+      decodedImage.duration =  frame.durationMillisecond;
+      animation.addFrame(decodedImage);
+    }
+    return image.encodeGifAnimation(animation);
   }
 
   @override
