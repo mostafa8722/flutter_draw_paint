@@ -3,7 +3,7 @@ enum PenTool {
   normalPen,
   normalWithShaderPen,
   glowPen,
-  glowWithDotPen,
+  glowWithDotsPen,
   earserPen,
   customPen
 }
